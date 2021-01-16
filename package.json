@@ -4,6 +4,10 @@
   "main": "index.js",
   "author": "Gleison Batista Soares <gleisonbs@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "jest --passWithNoTests --watch",
+    "test:staged": "jest --passWithNoTests"
+  },
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.21",
