@@ -5,9 +5,14 @@ const name = 'test user';
 const email = 'test.user@email.com';
 const password = 'password';
 
+const makeSut = () => {
+  const sut = new SignUpController()
+  return { sut }
+}
+
 describe('SignUp Controller', () => {
   it('Should return 400 when name is not provided', async () => {
-    const sut = new SignUpController();
+    const { sut } = makeSut()
 
     const httpRequest = {
       body: {
@@ -22,7 +27,7 @@ describe('SignUp Controller', () => {
   });
 
   it('Should return 400 when email is not provided', async () => {
-    const sut = new SignUpController();
+    const { sut } = makeSut()
 
     const httpRequest = {
       body: {
@@ -37,7 +42,7 @@ describe('SignUp Controller', () => {
   });
 
   it('Should return 400 when password is not provided', async () => {
-    const sut = new SignUpController();
+    const { sut } = makeSut()
 
     const httpRequest = {
       body: {
@@ -52,7 +57,7 @@ describe('SignUp Controller', () => {
   });
 
   it('Should return 400 when passwordConfirmation is not provided', async () => {
-    const sut = new SignUpController();
+    const { sut } = makeSut()
 
     const httpRequest = {
       body: {
