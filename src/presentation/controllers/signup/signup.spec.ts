@@ -1,15 +1,31 @@
 /* eslint class-methods-use-this: "off" */
 import { SignUpController } from './signup';
+import { IUserModel } from '../../../domain/models/user';
+import { IAddUser, IAddUserModel } from '../../../domain/use-cases/add-user';
 import { MissingParamError } from '../error/missing-param-error';
 import { InvalidParamError } from '../error/invalid-param-error';
+import { IHttpRequest } from '../protocols';
 
 const name = 'test user';
 const email = 'test.user@email.com';
 const password = 'password';
+const hashedPassword = 'hashed.password';
+
+
+class AddUserStub implements IAddUser {
+  async add(userModel: IAddUserModel): Promise<IUserModel> {
+    return {
+      name,
+      email,
+      hashedPassword
+    }
+  }
+}
 
 const makeSut = () => {
-  const sut = new SignUpController()
-  return { sut }
+  const addUser = new AddUserStub()
+  const sut = new SignUpController(addUser)
+  return { sut, addUser }
 }
 
 describe('SignUp Controller', () => {
@@ -69,8 +85,8 @@ describe('SignUp Controller', () => {
         name,
         email,
         password,
-      },
-    };
+      }
+    }
 
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
@@ -92,5 +108,19 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new InvalidParamError('passwordConfirmation'));
+  });
+
+  it('Should call AddUser with correct parameters', async () => {
+    const { sut, addUser } = makeSut()
+    const addSpy = jest.spyOn(addUser, 'add')
+
+    const httpRequest: IHttpRequest = {
+      body: {
+        name, email, password, passwordConfirmation: password
+      }
+    }
+
+    await sut.handle(httpRequest)
+    expect(addSpy).toBeCalledWith({ name, email, password })
   });
 });
