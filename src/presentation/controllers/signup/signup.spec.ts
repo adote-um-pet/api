@@ -70,4 +70,20 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
   });
+
+  it('Should return 400 when password and passwordConfirmation are different', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = {
+      body: {
+        name,
+        email,
+        password,
+        passwordConfirmation: `different.${password}`
+      },
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(400);
+  });
 });
