@@ -1,6 +1,7 @@
 /* eslint class-methods-use-this: "off" */
 import { SignUpController } from './signup';
 import { MissingParamError } from '../error/missing-param-error';
+import { InvalidParamError } from '../error/invalid-param-error';
 
 const name = 'test user';
 const email = 'test.user@email.com';
@@ -90,5 +91,6 @@ describe('SignUp Controller', () => {
 
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(new InvalidParamError('passwordConfirmation'));
   });
 });
