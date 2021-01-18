@@ -13,7 +13,7 @@ module.exports = {
   roots: [
     '<rootDir>/src'
   ],
-  modulePathIgnorePatterns: ["protocols"],
+  modulePathIgnorePatterns: ["protocols", "domain"],
   testEnvironment: 'node',
   transform: {
     '.+\\.ts$': 'ts-jest'
