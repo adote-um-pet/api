@@ -50,4 +50,19 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
   });
+
+  it('Should return 400 when passwordConfirmation is not provided', async () => {
+    const sut = new SignUpController();
+
+    const httpRequest = {
+      body: {
+        name,
+        email,
+        password,
+      },
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(400);
+  });
 });
